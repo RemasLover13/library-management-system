@@ -1,0 +1,16 @@
+body {
+    padding: 0;
+    margin: 0;
+    align-content: center;
+    background-color: antiquewhite;
+    text-align: center;
+    color: orange;
+    font-family: "Bauhaus 93";
+    font-size: 25px;
+}
+
+.error {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 5px;
+}

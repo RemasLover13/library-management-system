@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1>Книга</h1>
+    <br>
+    <hr>
+    <div>
+        <p><strong>Название:</strong> <span th:text="${book.title}"></span></p>
+        <p><strong>Автор:</strong> <span th:text="${book.author}"></span></p>
+        <p><strong>Год Издания:</strong> <span th:text="${book.year}"></span></p>
+        <p><strong>Кто взял:</strong>
+            <span th:if="${book.user != null}" th:text="${book.user.fio}"></span>
+            <span th:if="${book.user == null}">Никто не взял</span>
+        </p>
+
+        <div th:if="${book.user != null}">
+            <form th:action="@{/books/{id}/release(id=${book.id})}" method="post">
+                <button type="submit">Освободить книгу</button>
+            </form>
+        </div>
+
+        <div th:if="${book.user == null}">
+            <form th:action="@{/books/{id}/assign(id=${book.id})}" th:object="${book}" method="post">
+                <div>
+                    <label for="user">Выберите пользователя:</label>
+                    <select th:field="*{user}" id="user">
+                        <option value="" disabled selected>Выберите пользователя</option>
+                        <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fio}"></option>
+                    </select>
+                </div>
+                <button type="submit">Назначить</button>
+            </form>
+        </div>
+    <a th:href="@{/books}">Назад</a>
+    </div>
+</body>
+</html>

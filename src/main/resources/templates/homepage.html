@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+<h1>Библиотека</h1>
+<p>Time is now: </p>
+<span id="time" th:text="${dateTime}">Time</span> <!-- Изначально выводим время с сервера -->
+
+<br>
+<a th:href="@{/books}">Книги</a>
+<br>
+<a th:href="@{/users}">Читатели</a>
+
+<h2>Свободные книги</h2>
+<ul>
+    <li th:each="book : ${books}" th:if="${book.user == null}">
+        <span th:text="${book.title}">Название книги</span> -
+        <span th:text="${book.author}">Автор книги</span>
+    </li>
+</ul>
+<script>
+    function updateTime() {
+        var timeElement = document.getElementById("time");
+        var currentDate = new Date();
+
+        var formattedTime = currentDate.toLocaleString();
+
+        timeElement.textContent = formattedTime;
+    }
+
+    setInterval(updateTime, 1000);
+</script>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

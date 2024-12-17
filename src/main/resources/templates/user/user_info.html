@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <h1>Читатель</h1>
+    <div>
+        <span>ФИО: </span>
+        <span th:text="${user.fio}"></span>
+        <br>
+        <span>Год Рождения: </span>
+        <span th:text="${user.birthYear}"></span>
+        <br>
+        <span>Книги:</span>
+        <ul>
+            <li th:each="book : ${user.books}" th:text="${book.title}"></li>
+        </ul>
+        <p th:if="${user.books.isEmpty()}">Не взял ни одной книги.</p>
+    </div>
+    <a th:href="@{/users}">Назад</a>
+</body>
+</html>
