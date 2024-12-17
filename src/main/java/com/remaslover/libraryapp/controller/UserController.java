@@ -65,10 +65,15 @@ public class UserController {
 
     @PostMapping("/edit/{id}")
     public String updateUser(@ModelAttribute @Valid UserDto userDto, BindingResult bindingResult, Model model) {
+
         userValidator.validate(userDto, bindingResult);
+
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userDto", userDto);
             return "user/edit_user";
         }
+
         userService.update(userMapper.mapToEntity(userDto));
         return "redirect:/users";
     }
@@ -76,11 +81,13 @@ public class UserController {
     @GetMapping("/edit/{id}")
     public String showEditUserForm(@PathVariable Long id, Model model) {
         User user = userService.getUserById(id);
+
         if (user != null) {
-            model.addAttribute("user", user);
+            UserDto userDto = userMapper.mapToDto(user);
+            model.addAttribute("userDto", userDto);
             return "user/edit_user";
         }
-        return "user/users";
+        return "redirect:/users";
     }
 
     @PostMapping("/{id}")

@@ -21,7 +21,6 @@ public class UserDto {
     @Size(min = 20, max = 100)
     private String fio;
     @NotNull
-    @NotEmpty(message = "year should be between 1900 and 2025")
     private Integer birthYear;
     private List<BookDto> books;
 

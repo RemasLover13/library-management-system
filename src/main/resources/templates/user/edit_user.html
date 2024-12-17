@@ -7,9 +7,9 @@
 </head>
 <body>
 
-<form th:action="@{/users/edit/{id}(id=${user.id})}" th:object="${userDto}" th:method="post">
+<form th:action="@{/users/edit/{id}(id=${userDto.id})}" th:object="${userDto}" method="post">
     <div>
-        <label for="fio">Фио:</label>
+        <label for="fio">ФИО:</label>
         <input type="text" id="fio" th:field="*{fio}" required />
         <div th:if="${#fields.hasErrors('fio')}" class="error">
             <span th:errors="*{fio}"></span>
@@ -17,14 +17,15 @@
     </div>
 
     <div>
-        <label for="year">Год Рождения:</label>
-        <input type="text" id="year" th:field="*{birthYear}" required />
+        <label for="birthYear">Год рождения:</label>
+        <input type="text" id="birthYear" th:field="*{birthYear}" required />
         <div th:if="${#fields.hasErrors('birthYear')}" class="error">
             <span th:errors="*{birthYear}"></span>
         </div>
     </div>
     <button type="submit">Изменить</button>
 </form>
+
 
 </body>
 </html>

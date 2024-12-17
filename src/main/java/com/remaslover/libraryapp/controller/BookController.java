@@ -71,7 +71,7 @@ public class BookController {
     }
 
     @PostMapping("/{id}/assign")
-    public String assignUserToBook(@PathVariable Long id, @ModelAttribute  BookDto book) {
+    public String assignUserToBook(@PathVariable Long id, @ModelAttribute BookDto book) {
         Book existingBook = bookService.getById(id);
         System.out.println(existingBook.getId());
         User selectedUser = userService.getUserById(book.getUser().getId());
@@ -85,18 +85,21 @@ public class BookController {
     public String editBook(@ModelAttribute @Validated BookDto bookDto, @PathVariable Long id, Model model, BindingResult bindingResult) {
         bookValidator.validate(bookDto, bindingResult);
 
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("bookDto", bookDto);
             return "book/edit_book";
         }
+
         bookDto.setId(id);
         bookService.update(bookMapper.mapToEntity(bookDto));
+
         return "redirect:/books";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditBookForm(@PathVariable long id, Model model) {
-        model.addAttribute("book", bookMapper.mapToDto(bookService.getById(id)));
+        model.addAttribute("bookDto", bookMapper.mapToDto(bookService.getById(id)));
         return "book/edit_book";
     }
 

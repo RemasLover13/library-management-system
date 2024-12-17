@@ -19,7 +19,6 @@ public class BookDto {
     @Size(min = 2, max = 50)
     private String title;
     @NotNull
-    @NotEmpty(message = "Year should be between 0 and 2025")
     @Min(0)
     @Max(2025)
     private Integer year;

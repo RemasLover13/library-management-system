@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Изменить книгу</h1>
-<form th:action="@{/books/edit/{id}(id=${book.id})}" th:object="${bookDto}" method="post">
+<form th:action="@{/books/edit/{id}(id=${bookDto.id})}" th:object="${bookDto}" method="post">
     <div>
         <label for="title">Название:</label>
         <input type="text" id="title" th:field="*{title}" required />
