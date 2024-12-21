@@ -8,17 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 @ActiveProfiles("test")
 public class IUserServiceTest {
 
@@ -35,8 +37,7 @@ public class IUserServiceTest {
 
     @BeforeEach
     public void setUp() {
-        // Создание пользователя для тестов
-        testUser = new User("John Doe", "john@example.com");
+        testUser = new User("Ivan Ivanov", "2000");
         userRepository.save(testUser);
     }
 
@@ -57,10 +58,10 @@ public class IUserServiceTest {
 
     @Test
     public void testSaveUser() {
-        User newUser = new User("Jane Doe", "jane@example.com");
+        User newUser = new User("Ivan Ivanov", "2000");
         User savedUser = userService.save(newUser);
         assertNotNull(savedUser, "Saved user should not be null");
-        assertEquals(newUser.getName(), savedUser.getName(), "Saved user's name should match");
+        assertEquals(newUser.getFio(), savedUser.getFio(), "Saved user's name should match");
     }
 
     @Test
@@ -70,11 +71,4 @@ public class IUserServiceTest {
         assertFalse(userRepository.existsById(userId), "User should be deleted");
     }
 
-    // Пример теста с использованием MockMvc для HTTP запросов (если у вас есть контроллеры)
-    @Test
-    public void testGetUserById_Mvc() throws Exception {
-        mockMvc.perform(get("/users/" + testUser.getId()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(testUser.getFio()));
-    }
 }

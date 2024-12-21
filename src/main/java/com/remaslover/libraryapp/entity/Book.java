@@ -24,4 +24,10 @@ public class Book {
     @ManyToOne
     private User user;
 
+    public Book(String title, String author, Integer year, User user) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.user = user;
+    }
 }

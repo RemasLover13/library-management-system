@@ -28,4 +28,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Book> books = new ArrayList<>();
 
+    public User(String fio, String birthYear) {
+        this.fio = fio;
+        this.birthYear = birthYear;
+    }
 }
