@@ -11,11 +11,17 @@ import com.remaslover.libraryapp.service.UserService;
 import com.remaslover.libraryapp.util.BookValidator;
 import com.remaslover.libraryapp.util.UserValidator;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/books")
@@ -37,10 +43,44 @@ public class BookController {
         this.bookValidator = bookValidator;
     }
 
+    @GetMapping("/search")
+    public String search(Model model, @RequestParam(required = false) String query) {
+        if (query != null && !query.isEmpty()) {
+            List<Book> books = bookService.getByTitleStartingWithIgnoreCase(query);
+            if (books.isEmpty()) {
+                model.addAttribute("message", "По вашему запросу ничего не найдено.");
+            } else {
+                model.addAttribute("books", books);
+            }
+        } else {
+            model.addAttribute("message", "Пожалуйста, введите запрос для поиска.");
+        }
+        return "book/search_book";
+    }
+
+
 
     @GetMapping
-    public String getBooks(Model model) {
-        model.addAttribute("books", bookMapper.mapToDto(bookService.getAllBooks()));
+    public String getBooks(
+            Model model,
+            @RequestParam(required = false, name = "sort_by_year") String sortByYear,
+            @RequestParam(required = false, defaultValue = "0", name = "page") int page,
+            @RequestParam(required = false, defaultValue = "3", name = "size") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if ("true".equalsIgnoreCase(sortByYear)) {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Order.asc("year")));
+        }
+
+        Page<Book> booksPage = bookService.getBooksByPage(pageable);
+
+        model.addAttribute("books", bookMapper.mapToDto(booksPage.getContent()));
+        model.addAttribute("totalPages", booksPage.getTotalPages());
+        model.addAttribute("currentPage", booksPage.getNumber());
+        model.addAttribute("totalBooks", booksPage.getTotalElements());
+        model.addAttribute("pageSize", size);
+
         return "book/books";
     }
 

@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Добавить книгу</h1>
-<form th:action="@{/books/new}" th:object="${book}" method="post">
+<form th:action="@{/books/new}" th:object="${bookDto}" method="post">
 
     <div>
         <label for="title">Название:</label>

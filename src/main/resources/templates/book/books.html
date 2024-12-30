@@ -8,6 +8,10 @@
 <body>
 <h1>Книги: </h1>
 <br>
+<form th:action="@{/books/search}" method="get">
+    <input type="text" name="query" placeholder="Поиск по названию" />
+    <button type="submit">Найти</button>
+</form>
 <hr>
 <a th:href="@{/books/new}">Добавить книгу</a>
 <table>
@@ -32,6 +36,40 @@
     </tr>
     </tbody>
 </table>
+
+<div>
+    <ul class="pagination">
+        <!-- Первая страница -->
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/books(page=0, size=${pageSize != null} ? ${pageSize} : 3)}">Первая</a>
+        </li>
+
+        <li th:if="${currentPage > 0}">
+            <a th:href="@{/books(page=${currentPage - 1}, size=${pageSize != null} ? ${pageSize} : 3)}">Предыдущая</a>
+        </li>
+
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/books(page=${currentPage + 1}, size=${pageSize != null} ? ${pageSize} : 3)}">Следующая</a>
+        </li>
+
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/books(page=${totalPages - 1}, size=${pageSize != null} ? ${pageSize} : 3)}">Последняя</a>
+        </li>
+    </ul>
+
+    <p>Страница <span th:text="${currentPage + 1}">1</span> из <span th:text="${totalPages}">10</span></p>
+
+    <p>Всего книг: <span th:text="${totalBooks}">100</span></p>
+</div>
+
+
+
+
+
+
+
+
+
 <a th:href="@{/}">Назад</a>
 <div th:replace="~{fragments/footer :: footer}"></div>
 

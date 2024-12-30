@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +23,13 @@ public class Book {
     private String author;
     private Integer year;
 
+    @Column(name = "borrowed_at")
+    private LocalDateTime borrowedAt;
+
+    @Transient
+    private boolean overdue;
+
+
     @ManyToOne
     private User user;
 
@@ -29,5 +38,21 @@ public class Book {
         this.author = author;
         this.year = year;
         this.user = user;
+    }
+
+    public Book(String title, String author, Integer year, LocalDateTime borrowedAt, boolean overdue, User user) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.borrowedAt = borrowedAt;
+        this.overdue = overdue;
+        this.user = user;
+    }
+
+    public boolean isOverdue() {
+        if (borrowedAt == null) {
+            return false;
+        }
+        return borrowedAt.plusDays(10).isBefore(LocalDateTime.now());
     }
 }

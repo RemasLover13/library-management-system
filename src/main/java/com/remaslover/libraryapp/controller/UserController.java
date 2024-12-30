@@ -1,6 +1,7 @@
 package com.remaslover.libraryapp.controller;
 
 import com.remaslover.libraryapp.dto.UserDto;
+import com.remaslover.libraryapp.entity.Book;
 import com.remaslover.libraryapp.entity.User;
 import com.remaslover.libraryapp.mapper.BookMapper;
 import com.remaslover.libraryapp.mapper.UserMapper;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/users")
@@ -43,6 +46,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String getUser(@PathVariable Long id, Model model) {
+//        model.addAttribute("user", userMapper.mapToDto(userService.getUserById(id)));
+//        return "user/user_info";
+
+        // Получаем книги с информацией о просроченности
+
+        List<Book> books = bookService.getBooksByUserId(id);
+        model.addAttribute("books", books);
         model.addAttribute("user", userMapper.mapToDto(userService.getUserById(id)));
         return "user/user_info";
     }

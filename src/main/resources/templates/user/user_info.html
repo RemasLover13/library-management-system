@@ -16,7 +16,12 @@
         <br>
         <span>Книги:</span>
         <ul>
-            <li th:each="book : ${user.books}" th:text="${book.title}"></li>
+            <li th:each="book : ${books}">
+                <span th:text="${book.title}">Книга</span> -
+                <span th:text="${book.author}">Автор</span>
+                <span th:if="${book.overdue}" style="color: red;">(Просрочено)</span>
+            </span>
+            </li>
         </ul>
         <p th:if="${user.books.isEmpty()}">Не взял ни одной книги.</p>
     </div>
